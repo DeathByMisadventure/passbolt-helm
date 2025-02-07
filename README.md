@@ -85,19 +85,24 @@ Install the helm chart with:
 
 `helm install --namespace passbolt -f ./local-values.yaml deployment-name .`
 
+## Creating First Admin User
+
+At the end of the installation, instructions will be provided on the command to copy/paste to create the
+initial administrator account.  From there, you can log in with the URL provided to continue setting up
+the administrator account, then configure the Passbolt application, and finally add users.
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| firstAdmin | object | `{"email":"admin@domain.com","firstName":"First","surname":"Admin"}` | Information on setting up the initial admin account |
 | imagePullSecrets | list | `[]` | Used for private repositories |
 | ingress-nginx.controller.config | object | `{"enable-modsecurity":"true","enable-owasp-modsecurity-crs":"true","modsecurity-snippet":"SecRuleEngine On\nSecStatusEngine Off\nSecAuditLog /dev/stdout\nSecAuditLogFormat JSON\nSecAuditLogParts ABCFHKZ\nSecAuditEngine RelevantOnly\nSecPcreMatchLimit 500000\nSecPcreMatchLimitRecursion 500000\nSecAction \"id:900200,phase:1,nolog,pass,t:none,setvar:tx.allowed_methods=GET HEAD POST OPTIONS PUT PATCH DELETE\"\nSecRuleRemoveById 920440\n","modsecurity-transaction-id":"$request_id"}` | Ingress-NGINX Configuration for MODSECURITY OWASP Protection Comment out this entire section to disable the WAF |
 | ingress.annotations | object | `{"nginx.ingress.kubernetes.io/force-ssl-redirect":"true"}` | Ingress annotations |
 | ingress.className | string | `"nginx"` | Ingress class type |
 | ingress.enabled | bool | `true` | Enable Ingress |
-| ingress.hostname | string | `"passbolt.localdev.me"` |  |
-| ingress.hosts[0] | object | `{"host":"passbolt.localdev.me","paths":["/"]}` | Ingress hostname to bind |
-| ingress.hosts[0].paths | list | `["/"]` | Ingress host paths |
-| ingress.tls | string | `nil` | Enable TLS with a specific preconfigured TLS certificate |
+| ingress.hostname | string | `"passbolt.localdev.me"` | ingress external hostname |
+| ingress.tls | object | `{"secretName":null}` | Enable TLS with a specific preconfigured TLS certificate secret |
 | passbolt | object | `{"config":{"emailTransportDefaultHost":"smtp.domain.tld","emailTransportDefaultPort":"587"},"image":{"pullPolicy":"IfNotPresent","repository":"passbolt/passbolt","tag":"latest"},"name":"passbolt","pvc":{"storageRequest":"100Mi"},"replicas":1,"resources":{"limits":{"cpu":"1000m","memory":"1Gi"},"requests":{"cpu":"1000m","ephemeral-storage":"2Gi","memory":"1Gi"}},"securityContext":null,"service":{"name":"http","port":80,"type":"ClusterIP"}}` | Image pull secrets |
 | passbolt.config | object | `{"emailTransportDefaultHost":"smtp.domain.tld","emailTransportDefaultPort":"587"}` | Configuration data passed directly into passbolt pod environment variables as is |
 | passbolt.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
@@ -108,7 +113,7 @@ Install the helm chart with:
 | passbolt.replicas | int | `1` | Number of pod replicas |
 | passbolt.resources | object | `{"limits":{"cpu":"1000m","memory":"1Gi"},"requests":{"cpu":"1000m","ephemeral-storage":"2Gi","memory":"1Gi"}}` | Pod assigned resources |
 | passbolt.securityContext | string | `nil` | Pod security context |
-| passbolt.service | object | `{"name":"http","port":80,"type":"ClusterIP"}` | Passbolt container service information |
+| passbolt.service | object | `{"name":"http","port":80,"type":"ClusterIP"}` | Passbolt container service port information |
 | postgres.database | string | `"passbolt"` | Database name |
 | postgres.enabled | bool | `true` | Enable internal postgres database |
 | postgres.hostname | string | `"postgres.localdev.me"` | If internal postgres is disabled, the external database hostname |
@@ -125,3 +130,4 @@ Install the helm chart with:
 | postgres.securityContext | string | `nil` | Pod security context |
 | postgres.service.port | string | `"5432"` | Service port number |
 | postgres.user | string | `"passbolt"` | Postgres username |
+
