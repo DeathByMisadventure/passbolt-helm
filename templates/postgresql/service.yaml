@@ -1,0 +1,20 @@
+{{- if .Values.postgres.enabled }}
+{{- $fullName := include "passbolt.fullname" . -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-postgres
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+{{ include "passbolt.labels" . | nindent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "passbolt.name" . }}-postgres
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  clusterIP: None
+  ports:
+    - port: {{ .Values.postgres.service.port }}
+      targetPort: postgres
+      protocol: TCP
+      name: postgres
+{{- end }}

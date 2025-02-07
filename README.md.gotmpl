@@ -1,0 +1,93 @@
+# Passbolt with Postgresql Helm Chart
+
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Prerequisites
+
+A Postgresql server for Passbolt must be deployed into the environment, or configure
+the values to enable the built in Postgresql instance.  For enterprise use, an external
+Postgresql server is recommended.
+
+## Configure values.yaml or valuesoverride.yaml
+
+A few variables need to be created in the values.yaml or in a values override. Documentation
+of the variables are below or in the values.yaml file.
+
+Optional configuration for Guacamole can be configured under guacamole.settings: such as
+OpenID authentication.
+
+All environmental variable names will automatically be uppercased and properly underscored.
+
+## Use Internal Postgresql
+
+If you utilize the instance of Postgresql included in this chart, a Persistent Volume (PV) is recommended.
+Create a PV according to the requirements of your environment.
+
+This demo kubernetes PV will create with storage in your kubernetes host's /tmp/postgres-pv directory.
+Remember to deploy this in the same namespace as the helm deployment.
+
+The two keys are the `storageClassName:` and the `metadata.name:` which will then need to match
+`postgres.pvc.storageClassName:` and the `postgres.pvc.selector:` in values.yaml for the Persistent Volume Claim
+used in the helm chart.
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /tmp/postgres-pv
+```
+
+## NGINX Modsecurity OWASP Web Application Firewall (WAF)
+
+`ingress-nginx.controller.config` in the values.yaml configuration enables the [Web Application Firewall (WAF)](https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/).  The Ingress WAF comes with the [OWASP Core Rule Set (CRS)](https://owasp.org/www-project-modsecurity-core-rule-set/).
+
+The OWASP CRS provides the rules for the NGINX ModSecurity WAF to block SQL Injection (SQLi), Remote Code Execution (RCE), Local File Include (LFI), cross‑site scripting (XSS), and many other attacks.
+
+The necessary rule changes to work with Guacamole have been applied.
+
+## Deployment
+
+Import the dependencies for the helm chart:
+
+`helm dependency update`
+
+Create a namespace if needed:
+
+`kubectl create ns passbolt`
+
+If using the internal Postgres deployment, create the PV and deploy it.
+
+Customize any values by creating a local-values.yaml and including the overrides from the main values.yaml.
+
+Add a secret for the ingress TLS certificate if needed, and configure TLS in the values.
+[Documentation](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/)
+
+`kubectl create --namespace passbolt secret tls external-tls-cert --cert=tls.crt --key=tls.key`
+
+Install the helm chart with:
+
+`helm install --namespace passbolt -f ./local-values.yaml deployment-name .`
+
+## Creating First Admin User
+
+At the end of the installation, instructions will be provided on the command to copy/paste to create the
+initial administrator account.  From there, you can log in with the URL provided to continue setting up
+the administrator account, then configure the Passbolt application, and finally add users.
+
+{{ template "chart.valuesSection" . }}
+

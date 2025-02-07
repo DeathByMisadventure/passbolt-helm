@@ -1,0 +1,19 @@
+{{- $fullName := include "passbolt.fullname" . -}}
+{{- define "postgres.hostname" -}}
+{{- if .Values.postgres.enabled -}}
+{{- $fullName := include "passbolt.fullname" . -}}
+{{- printf "%s-postgres" $fullName -}}
+{{- else -}}
+{{- .Values.postgres.hostname -}}
+{{- end -}}
+{{- end -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.passbolt.name }}-configmap
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+{{ include "passbolt.labels" . | indent 4 }}
+data:
+  APP_FULL_BASE_URL: https://{{ .Values.ingress.hostname }}
+  {{- toYaml .Values.passbolt.config | nindent 2 }}

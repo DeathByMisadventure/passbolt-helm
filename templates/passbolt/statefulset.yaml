@@ -1,0 +1,73 @@
+{{- define "postgres.hostname" -}}
+{{- if .Values.postgres.enabled -}}
+{{- $fullName := include "passbolt.fullname" . -}}
+{{- printf "%s-postgres" $fullName -}}
+{{- else -}}
+{{- .Values.postgres.hostname -}}
+{{- end -}}
+{{- end -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "passbolt.fullname" . }}-passbolt
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+{{ include "passbolt.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.passbolt.replicas }}
+  selector:
+    matchLabels:
+        app.kubernetes.io/name: {{ include "passbolt.name" . }}-passbolt
+        app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "passbolt.name" . }}-passbolt
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.passbolt.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      automountServiceAccountToken: false
+      containers:
+        - name: {{ .Values.passbolt.name }}
+          image: "{{ .Values.passbolt.image.repository }}:{{ tpl .Values.passbolt.image.tag . }}"
+          imagePullPolicy: {{ .Values.passbolt.image.pullPolicy }}
+          args:
+            - bash
+            - -c
+            - /usr/bin/wait-for.sh -t 0 {{ include "postgres.hostname" . }}:5432 -- /docker-entrypoint.sh
+          envFrom:
+            - secretRef:
+                name: {{ .Values.passbolt.name }}-secret
+            - configMapRef:
+                name: {{ .Values.passbolt.name }}-configmap
+          ports:
+            - name: {{ .Values.passbolt.service.name }}
+              containerPort: {{ .Values.passbolt.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.passbolt.service.name }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.passbolt.service.name }}
+          resources:
+            {{- toYaml .Values.passbolt.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.passbolt.securityContext | nindent 12 }}
+      volumes:
+        - name: {{ .Values.passbolt.name }}-pvc
+          persistentVolumeClaim:
+            claimName: {{ .Values.passbolt.name }}-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.passbolt.name }}-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.passbolt.pvc.storageRequest | quote }}

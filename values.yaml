@@ -1,0 +1,147 @@
+# -- Used for private repositories
+imagePullSecrets: []
+
+postgres:
+  # -- Container Name
+  name: postgres
+  # -- Enable internal postgres database
+  enabled: true
+  image:
+    # -- Image repository
+    repository: postgres
+    # -- Image tag
+    tag: 16-alpine
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+  # -- Number of pod replicas
+  replicas: 1
+  # -- Pod assigned resources
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+      ephemeral-storage: "2Gi"
+    requests:
+      cpu: 100m
+      memory: 1Gi
+      ephemeral-storage: "2Gi"
+  # -- Pod security context
+  securityContext:
+    # allowPrivilegeEscalation: false
+    # runAsNonRoot: true
+    # readOnlyRootFilesystem: false
+    # capabilities:
+    #   drop:
+    #     - ALL
+    # seccompProfile:
+    #   type: RuntimeDefault
+  service:
+    # -- Service port number
+    port: "5432"
+  # -- If internal postgres is disabled, the external database hostname
+  hostname: "postgres.localdev.me"
+
+  # -- Database name
+  database: "passbolt"
+  # -- Postgres username
+  user: "passbolt"
+  # -- Postgres password
+  password: "p@ssb0lt"
+  pvc:
+    # -- Postgres PVC storage request size
+    storageRequest: 100Mi
+    # -- Storage Class Name for a pre-provisioned PV
+    storageClassName:
+    # -- Selector to match pre-provisioned PV
+    selector:
+      # matchLabels:
+      #   type: postgres-pv
+
+# -- Image pull secrets
+
+passbolt:
+  # -- Container Name
+  name: passbolt
+  image:
+    # -- Image repository
+    repository: passbolt/passbolt
+    # -- Image tag defaults to Chart AppVersion
+    tag: latest
+    # -- Image pull policy
+    pullPolicy: IfNotPresent
+  # -- Number of pod replicas
+  replicas: 1
+  pvc:
+    # -- PVC size for the pod data
+    storageRequest: 100Mi
+  # -- Configuration data passed directly into passbolt pod environment variables as is
+  config:
+    emailTransportDefaultHost: smtp.domain.tld
+    emailTransportDefaultPort: "587"
+  # -- Passbolt container service port information
+  service:
+    name: "http"
+    port: 80
+    type: ClusterIP
+  # -- Pod assigned resources
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 1000m
+      memory: 1Gi
+      ephemeral-storage: "2Gi"
+  # -- Pod security context
+  securityContext:
+    # allowPrivilegeEscalation: true
+    # # runAsNonRoot: true
+    # readOnlyRootFilesystem: false
+    # capabilities:
+    #   drop:
+    #     - ALL
+    # seccompProfile:
+    #   type: RuntimeDefault
+
+# -- Information on setting up the initial admin account
+firstAdmin:
+  email: admin@domain.com
+  firstName: First
+  surname: Admin
+
+ingress:
+  # -- Enable Ingress
+  enabled: true
+  # -- Ingress class type
+  className: nginx
+  # -- Ingress annotations
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # appgw.ingress.kubernetes.io/ssl-redirect: "true"
+    # kubernetes.io/ingress.class: azure/application-gateway
+  # -- ingress external hostname
+  hostname: passbolt.localdev.me
+
+  # -- Enable TLS with a specific preconfigured TLS certificate secret
+  tls:
+    secretName:
+
+ingress-nginx:
+  controller:
+    # -- Ingress-NGINX Configuration for MODSECURITY OWASP Protection
+    # Comment out this entire section to disable the WAF
+    config:
+      enable-modsecurity: "true"
+      enable-owasp-modsecurity-crs: "true"
+      modsecurity-transaction-id: "$request_id"
+      modsecurity-snippet: |
+        SecRuleEngine On
+        SecStatusEngine Off
+        SecAuditLog /dev/stdout
+        SecAuditLogFormat JSON
+        SecAuditLogParts ABCFHKZ
+        SecAuditEngine RelevantOnly
+        SecPcreMatchLimit 500000
+        SecPcreMatchLimitRecursion 500000
+        SecAction "id:900200,phase:1,nolog,pass,t:none,setvar:tx.allowed_methods=GET HEAD POST OPTIONS PUT PATCH DELETE"
+        SecRuleRemoveById 920440

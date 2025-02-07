@@ -1,0 +1,16 @@
+{{ if .Values.ingress.enabled }}
+  Deployment URL: https://{{ .Values.ingress.hostname }}
+{{ end }}
+.
+{{ if not .Release.IsUpgrade -}}
+Copy and paste this line to create the first admin credentials:
+  kubectl -n {{ .Release.Namespace }} exec {{ include "passbolt.fullname" . }}-passbolt-0 -- su -m -c \
+  "bin/cake passbolt register_user \
+  -u {{ .Values.firstAdmin.email }} \
+  -f {{ .Values.firstAdmin.firstName }} \
+  -l {{ .Values.firstAdmin.surname }} \
+  -r admin" \
+  -s /bin/sh www-data
+
+Then login at the URL provided to continue setting up the admin account, configure Passbolt and add new users.
+{{ end }}
