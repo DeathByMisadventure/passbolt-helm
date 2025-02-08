@@ -75,9 +75,37 @@ passbolt:
     # -- PVC size for the pod data
     storageRequest: 100Mi
   # -- Configuration data passed directly into passbolt pod environment variables as is
+  # Additional configuration settings are available at
+  # * https://github.com/passbolt/passbolt_api/blob/master/config/default.php
+  # * https://github.com/passbolt/passbolt_api/blob/master/config/app.default.php
+  # Note: It is recommended to set email options through the GUI once deployed
   config:
-    emailTransportDefaultHost: smtp.domain.tld
-    emailTransportDefaultPort: "587"
+    # EMAIL_TRANSPORT_DEFAULT_CLASS_NAME: Smtp # Email classname
+    # EMAIL_DEFAULT_FROM: you@localhost # From email address
+    # EMAIL_DEFAULT_TRANSPORT: default # Sets transport method
+    # EMAIL_TRANSPORT_DEFAULT_HOST: localhost # Server hostname
+    # EMAIL_TRANSPORT_DEFAULT_PORT: 25 # Server port
+    # EMAIL_TRANSPORT_DEFAULT_TIMEOUT: 30 # Timeout
+    # EMAIL_TRANSPORT_DEFAULT_USERNAME: null # Username for email server auth
+    # EMAIL_TRANSPORT_DEFAULT_PASSWORD: null # Password for email server auth
+    # EMAIL_TRANSPORT_DEFAULT_CLIENT: null # Client
+    # EMAIL_TRANSPORT_DEFAULT_TLS: null # Set tls
+    # EMAIL_TRANSPORT_DEFAULT_URL: null # Set url
+    # GNUPGHOME: /var/lib/passbolt/.gnupg # path to gnupghome directory
+    # PASSBOLT_KEY_LENGTH: 3072 # Gpg desired key length
+    # PASSBOLT_SUBKEY_LENGTH: 3072 # Gpg desired subkey length
+    # PASSBOLT_KEY_NAME: Passbolt default user # Key owner name
+    # PASSBOLT_KEY_EMAIL: passbolt@yourdomain.com # Key owner email address
+    # PASSBOLT_KEY_EXPIRATION: 0, never expires # Key expiration date
+    # PASSBOLT_GPG_SERVER_KEY_FINGERPRINT: null # GnuPG fingerprint
+    # PASSBOLT_GPG_SERVER_KEY_FINGERPRINT_FORCE: null # Force calculation of GnuPG fingerprint for server key
+    # PASSBOLT_GPG_SERVER_KEY_PUBLIC: /etc/passbolt/gpg/serverkey.asc # Path to GnuPG public server key
+    # PASSBOLT_GPG_SERVER_KEY_PRIVATE: /etc/passbolt/gpg/serverkey_private.asc # Path to GnuPG private server key
+    # PASSBOLT_PLUGINS_EXPORT_ENABLED: TRUE # Enable export plugin
+    # PASSBOLT_PLUGINS_IMPORT_ENABLED: TRUE # Enable import plugin
+    # PASSBOLT_REGISTRATION_PUBLIC: FALSE # Defines if users can register
+    # PASSBOLT_SECURITY_SET_HEADERS: TRUE # Send CSP Headers
+    # SECURITY_SALT: SALT # CakePHP security salt
   # -- Passbolt container service port information
   service:
     name: "http"
