@@ -136,8 +136,8 @@ the administrator account, then configure the Passbolt application, and finally 
 | ingress.enabled | bool | `true` | Enable Ingress |
 | ingress.hostname | string | `"passbolt.localdev.me"` | ingress external hostname |
 | ingress.tls | object | `{"secretName":null}` | Enable TLS with a specific preconfigured TLS certificate secret |
-| passbolt | object | `{"config":{"emailTransportDefaultHost":"smtp.domain.tld","emailTransportDefaultPort":"587"},"image":{"pullPolicy":"IfNotPresent","repository":"passbolt/passbolt","tag":"latest"},"name":"passbolt","pvc":{"storageRequest":"100Mi"},"replicas":1,"resources":{"limits":{"cpu":"1000m","memory":"1Gi"},"requests":{"cpu":"1000m","ephemeral-storage":"2Gi","memory":"1Gi"}},"securityContext":null,"service":{"name":"http","port":80,"type":"ClusterIP"}}` | Image pull secrets |
-| passbolt.config | object | `{"emailTransportDefaultHost":"smtp.domain.tld","emailTransportDefaultPort":"587"}` | Configuration data passed directly into passbolt pod environment variables as is |
+| passbolt | object | `{"config":null,"image":{"pullPolicy":"IfNotPresent","repository":"passbolt/passbolt","tag":"latest"},"name":"passbolt","pvc":{"storageRequest":"100Mi"},"replicas":1,"resources":{"limits":{"cpu":"1000m","memory":"1Gi"},"requests":{"cpu":"1000m","ephemeral-storage":"2Gi","memory":"1Gi"}},"securityContext":null,"service":{"name":"http","port":80,"type":"ClusterIP"}}` | Image pull secrets |
+| passbolt.config | string | `nil` | Configuration data passed directly into passbolt pod environment variables as is Additional configuration settings are available at * https://github.com/passbolt/passbolt_api/blob/master/config/default.php * https://github.com/passbolt/passbolt_api/blob/master/config/app.default.php Note: It is recommended to set email options through the GUI once deployed |
 | passbolt.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | passbolt.image.repository | string | `"passbolt/passbolt"` | Image repository |
 | passbolt.image.tag | string | `"latest"` | Image tag defaults to Chart AppVersion |
