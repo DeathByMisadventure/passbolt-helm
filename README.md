@@ -13,8 +13,6 @@ your corporate infrastructure.
 
 [Passbolt](https://www.passbolt.com/) is an open-source, self-hosted password manager designed for teams and organizations. It allows users to securely store, share, and manage passwords, while also providing features for password generation, authentication, and access control.
 
-Here are some key features and benefits of Passbolt:
-
 Key Features:
 
 1. **Password Storage**: Passbolt allows users to store passwords in a secure, encrypted vault.
