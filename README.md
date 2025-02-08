@@ -1,14 +1,43 @@
 # Passbolt with Postgresql Helm Chart
 
-A Helm chart for Kubernetes
+Passbolt is an open source credential platform for modern teams. A versatile, battle-tested solution to manage and collaborate on passwords, accesses, and secrets. All in one.
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.11.0](https://img.shields.io/badge/AppVersion-4.11.0-informational?style=flat-square)
 
-## Requirements
+**Homepage:** <https://github.com/DeathByMisadventure/passbolt-helm>
 
-| Repository | Name | Version |
-|------------|------|---------|
-| https://kubernetes.github.io/ingress-nginx | ingress-nginx | ~4.11.3 |
+## About Passbolt
+
+This helm chart deployment for Kubernetes is designed for an easy to configure and maintain deployment into
+your corporate infrastructure.
+
+[Passbolt](https://www.passbolt.com/) is an open-source, self-hosted password manager designed for teams and organizations. It allows users to securely store, share, and manage passwords, while also providing features for password generation, authentication, and access control.
+
+Here are some key features and benefits of Passbolt:
+
+Key Features:
+
+1. **Password Storage**: Passbolt allows users to store passwords in a secure, encrypted vault.
+2. **Password Sharing**: Users can share passwords with others, either individually or through groups, while maintaining control over access and permissions.
+3. **Password Generation**: Passbolt includes a built-in password generator that creates strong, unique passwords for users.
+4. **Authentication**: Passbolt supports various authentication methods, including username/password, two-factor authentication (2FA), and single sign-on (SSO) through LDAP, Active Directory, or SAML.
+5. **Access Control**: Passbolt enables administrators to manage user access and permissions, including role-based access control (RBAC) and attribute-based access control (ABAC).
+6. **Encryption**: Passbolt uses end-to-end encryption, ensuring that only authorized users can access password data.
+7. **Mobile and Desktop Apps**: Passbolt offers mobile apps for Android and iOS, as well as desktop apps for Windows, macOS, and Linux.
+
+**Benefits:**
+
+1. **Security**: Passbolt provides a secure way to store and share sensitive password information, reducing the risk of password-related breaches.
+2. **Convenience**: Passbolt simplifies password management, allowing users to access and share passwords from a single, intuitive interface.
+3. **Collaboration**: Passbolt facilitates teamwork and collaboration by enabling secure password sharing and access control.
+4. **Compliance**: Passbolt helps organizations meet regulatory requirements and industry standards for password management and security.
+5. **Customization**: As an open-source tool, Passbolt can be customized and extended to meet specific organizational needs.
+
+**Self-Hosted**: Passbolt is designed to be self-hosted, giving organizations full control over their password management infrastructure and data. This approach ensures that sensitive password information is not stored in the cloud or managed by a third-party provider.
+
+**Community-Driven**: Passbolt is an open-source project with an active community of contributors, users, and supporters. This community-driven approach ensures that the tool is continuously improved, updated, and secured.
+
+Overall, Passbolt is a robust, open-source password manager that provides a secure, convenient, and collaborative solution for teams and organizations to manage passwords and sensitive information.
 
 ## Prerequisites
 
@@ -21,10 +50,8 @@ Postgresql server is recommended.
 A few variables need to be created in the values.yaml or in a values override. Documentation
 of the variables are below or in the values.yaml file.
 
-Optional configuration for Guacamole can be configured under guacamole.settings: such as
-OpenID authentication.
-
-All environmental variable names will automatically be uppercased and properly underscored.
+[Additional configuration options](https://hub.docker.com/r/passbolt/passbolt/) for a containerized
+deployment of Passbolt is available.
 
 ## Use Internal Postgresql
 
@@ -72,12 +99,14 @@ Create a namespace if needed:
 
 `kubectl create ns passbolt`
 
-If using the internal Postgres deployment, create the PV and deploy it.
+If using the internal Postgres deployment, create the PV and deploy it according to your Kubernetes
+infrastructure requirements.
 
 Customize any values by creating a local-values.yaml and including the overrides from the main values.yaml.
 
 Add a secret for the ingress TLS certificate if needed, and configure TLS in the values.
-[Documentation](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/)
+[Documentation](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_secret_tls/).
+If no certificate is provided, then a self signed certificate is generated automatically.
 
 `kubectl create --namespace passbolt secret tls external-tls-cert --cert=tls.crt --key=tls.key`
 
@@ -90,6 +119,12 @@ Install the helm chart with:
 At the end of the installation, instructions will be provided on the command to copy/paste to create the
 initial administrator account.  From there, you can log in with the URL provided to continue setting up
 the administrator account, then configure the Passbolt application, and finally add users.
+
+## Requirements
+
+| Repository | Name | Version |
+|------------|------|---------|
+| https://kubernetes.github.io/ingress-nginx | ingress-nginx | ~4.11.3 |
 
 ## Values
 
@@ -130,4 +165,3 @@ the administrator account, then configure the Passbolt application, and finally 
 | postgres.securityContext | string | `nil` | Pod security context |
 | postgres.service.port | string | `"5432"` | Service port number |
 | postgres.user | string | `"passbolt"` | Postgres username |
-
