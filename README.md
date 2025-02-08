@@ -154,7 +154,7 @@ the administrator account, then configure the Passbolt application, and finally 
 | postgres.image.repository | string | `"postgres"` | Image repository |
 | postgres.image.tag | string | `"16-alpine"` | Image tag |
 | postgres.name | string | `"postgres"` | Container Name |
-| postgres.password | string | `"p@ssb0lt"` | Postgres password |
+| postgres.password | string | `nil` | Postgres connection password (Required) |
 | postgres.pvc.selector | string | `nil` | Selector to match pre-provisioned PV |
 | postgres.pvc.storageClassName | string | `nil` | Storage Class Name for a pre-provisioned PV |
 | postgres.pvc.storageRequest | string | `"100Mi"` | Postgres PVC storage request size |
@@ -162,4 +162,4 @@ the administrator account, then configure the Passbolt application, and finally 
 | postgres.resources | object | `{"limits":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"1Gi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"1Gi"}}` | Pod assigned resources |
 | postgres.securityContext | string | `nil` | Pod security context |
 | postgres.service.port | string | `"5432"` | Service port number |
-| postgres.user | string | `"passbolt"` | Postgres username |
+| postgres.user | string | `nil` | Postgres connection username (Required) |
