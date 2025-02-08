@@ -43,10 +43,10 @@ postgres:
 
   # -- Database name
   database: "passbolt"
-  # -- Postgres username
-  user: "passbolt"
-  # -- Postgres password
-  password: "p@ssb0lt"
+  # -- Postgres connection username (Required)
+  user:
+  # -- Postgres connection password (Required)
+  password:
   pvc:
     # -- Postgres PVC storage request size
     storageRequest: 100Mi
