@@ -16,4 +16,6 @@ metadata:
 {{ include "passbolt.labels" . | indent 4 }}
 data:
   APP_FULL_BASE_URL: https://{{ .Values.ingress.hostname }}
-  {{- toYaml .Values.passbolt.config | nindent 2 }}
+  {{- with .Values.passbolt.config -}}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}

@@ -10,7 +10,7 @@ postgres:
     # -- Image repository
     repository: postgres
     # -- Image tag
-    tag: 16-alpine
+    tag: 17-alpine
     # -- Image pull policy
     pullPolicy: IfNotPresent
   # -- Number of pod replicas
@@ -27,20 +27,17 @@ postgres:
       ephemeral-storage: "2Gi"
   # -- Pod security context
   securityContext:
-    # allowPrivilegeEscalation: false
-    # runAsNonRoot: true
-    # readOnlyRootFilesystem: false
-    # capabilities:
-    #   drop:
-    #     - ALL
-    # seccompProfile:
-    #   type: RuntimeDefault
+    seLinuxOptions: {}
+    runAsUser: 0
+    runAsGroup: 0
+    runAsNonRoot: false
+    seccompProfile:
+      type: RuntimeDefault
   service:
     # -- Service port number
     port: "5432"
   # -- If internal postgres is disabled, the external database hostname
   hostname: "postgres.localdev.me"
-
   # -- Database name
   database: "passbolt"
   # -- Postgres connection username (Required)
@@ -122,9 +119,9 @@ passbolt:
       ephemeral-storage: "2Gi"
   # -- Pod security context
   securityContext:
-    # allowPrivilegeEscalation: true
-    # # runAsNonRoot: true
-    # readOnlyRootFilesystem: false
+    allowPrivilegeEscalation: true
+    # runAsNonRoot: true
+    readOnlyRootFilesystem: false
     # capabilities:
     #   drop:
     #     - ALL
