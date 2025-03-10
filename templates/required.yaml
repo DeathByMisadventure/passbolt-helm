@@ -1,0 +1,2 @@
+{{- $_ := required "Postgres User is a required value" .Values.postgres.user }}
+{{- $_ := required "Postgres Password is a required value" .Values.postgres.password }}
