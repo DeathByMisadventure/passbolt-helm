@@ -152,6 +152,8 @@ ingress:
     secretName:
 
 ingress-nginx:
+  # -- Enable the controller if not already installed in the cluster
+  enabled: false
   controller:
     # -- Ingress-NGINX Configuration for MODSECURITY OWASP Protection
     # Comment out this entire section to disable the WAF
