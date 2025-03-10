@@ -166,7 +166,7 @@ ingress:
     secretName:
 
 ingress-nginx:
-  # -- Enable the controller if not already installed in the cluster
+  # -- Enable the ingress-nginx module dependency if not enabled in the cluster
   enabled: false
   controller:
     # -- Ingress-NGINX Configuration for MODSECURITY OWASP Protection
