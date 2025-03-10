@@ -131,7 +131,7 @@ the administrator account, then configure the Passbolt application, and finally 
 | firstAdmin | object | `{"email":"admin@domain.com","firstName":"First","surname":"Admin"}` | Information on setting up the initial admin account |
 | imagePullSecrets | list | `[]` | Used for private repositories |
 | ingress-nginx.controller.config | object | `{"enable-modsecurity":"true","enable-owasp-modsecurity-crs":"true","modsecurity-snippet":"SecRuleEngine On\nSecStatusEngine Off\nSecAuditLog /dev/stdout\nSecAuditLogFormat JSON\nSecAuditLogParts ABCFHKZ\nSecAuditEngine RelevantOnly\nSecPcreMatchLimit 500000\nSecPcreMatchLimitRecursion 500000\nSecAction \"id:900200,phase:1,nolog,pass,t:none,setvar:tx.allowed_methods=GET HEAD POST OPTIONS PUT PATCH DELETE\"\nSecRuleRemoveById 920440\n","modsecurity-transaction-id":"$request_id"}` | Ingress-NGINX Configuration for MODSECURITY OWASP Protection Comment out this entire section to disable the WAF |
-| ingress-nginx.enabled | bool | `false` | Enable the controller if not already installed in the cluster |
+| ingress-nginx.enabled | bool | `false` | Enable the ingress-nginx module dependency if not enabled in the cluster |
 | ingress.annotations | object | `{"nginx.ingress.kubernetes.io/force-ssl-redirect":"true"}` | Ingress annotations |
 | ingress.className | string | `"nginx"` | Ingress class type |
 | ingress.enabled | bool | `true` | Enable Ingress |
