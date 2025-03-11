@@ -147,7 +147,7 @@ the administrator account, then configure the Passbolt application, and finally 
 | ingress.enabled | bool | `true` | Enable Ingress |
 | ingress.hostname | string | `"passbolt.localdev.me"` | ingress external hostname |
 | ingress.tls | object | `{"secretName":null}` | Enable TLS with a specific preconfigured TLS certificate secret |
-| passbolt | object | `{"config":null,"image":{"pullPolicy":"IfNotPresent","repository":"passbolt/passbolt","tag":"latest"},"name":"passbolt","pvc":{"storageRequest":"100Mi"},"replicas":1,"resources":{"limits":{"cpu":"1000m","memory":"1Gi"},"requests":{"cpu":"1000m","ephemeral-storage":"2Gi","memory":"1Gi"}},"securityContext":{"allowPrivilegeEscalation":true,"readOnlyRootFilesystem":false},"service":{"name":"http","port":80,"type":"ClusterIP"}}` | Image pull secrets |
+| passbolt | object | `{"config":null,"image":{"pullPolicy":"IfNotPresent","repository":"passbolt/passbolt","tag":"latest"},"name":"passbolt","pvc":{"storageRequest":"100Mi"},"replicas":1,"resources":{"limits":{"cpu":"1000m","memory":"512Mi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"20Mi"}},"securityContext":{"allowPrivilegeEscalation":true,"readOnlyRootFilesystem":false},"service":{"name":"http","port":80,"type":"ClusterIP"}}` | Image pull secrets |
 | passbolt.config | string | `nil` | Configuration data passed directly into passbolt pod environment variables as is Additional configuration settings are available at * https://github.com/passbolt/passbolt_api/blob/master/config/default.php * https://github.com/passbolt/passbolt_api/blob/master/config/app.default.php Note: It is recommended to set email options through the GUI once deployed |
 | passbolt.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | passbolt.image.repository | string | `"passbolt/passbolt"` | Image repository |
@@ -155,7 +155,7 @@ the administrator account, then configure the Passbolt application, and finally 
 | passbolt.name | string | `"passbolt"` | Container Name |
 | passbolt.pvc.storageRequest | string | `"100Mi"` | PVC size for the pod data |
 | passbolt.replicas | int | `1` | Number of pod replicas |
-| passbolt.resources | object | `{"limits":{"cpu":"1000m","memory":"1Gi"},"requests":{"cpu":"1000m","ephemeral-storage":"2Gi","memory":"1Gi"}}` | Pod assigned resources |
+| passbolt.resources | object | `{"limits":{"cpu":"1000m","memory":"512Mi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"20Mi"}}` | Pod assigned resources |
 | passbolt.securityContext | object | `{"allowPrivilegeEscalation":true,"readOnlyRootFilesystem":false}` | Pod security context |
 | passbolt.service | object | `{"name":"http","port":80,"type":"ClusterIP"}` | Passbolt container service port information |
 | postgres.database | string | `"passbolt"` | Database name |
@@ -170,7 +170,7 @@ the administrator account, then configure the Passbolt application, and finally 
 | postgres.pvc.storageClassName | string | `nil` | Storage Class Name for a pre-provisioned PV |
 | postgres.pvc.storageRequest | string | `"100Mi"` | Postgres PVC storage request size |
 | postgres.replicas | int | `1` | Number of pod replicas |
-| postgres.resources | object | `{"limits":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"1Gi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"1Gi"}}` | Pod assigned resources |
+| postgres.resources | object | `{"limits":{"cpu":"1000m","memory":"512Mi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"20Mi"}}` | Pod assigned resources |
 | postgres.securityContext | object | `{"runAsGroup":0,"runAsNonRoot":false,"runAsUser":0,"seLinuxOptions":{},"seccompProfile":{"type":"RuntimeDefault"}}` | Pod security context |
 | postgres.service.port | string | `"5432"` | Service port number |
 | postgres.user | string | `nil` | Postgres connection username (Required) |
