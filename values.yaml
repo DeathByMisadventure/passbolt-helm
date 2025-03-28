@@ -40,7 +40,7 @@ postgres:
   # -- Database name
   database: "passbolt"
   # -- Postgres connection username (Required)
-  user:
+  user: postgres
   # -- Postgres connection password (Required)
   password:
   pvc:
