@@ -173,4 +173,4 @@ the administrator account, then configure the Passbolt application, and finally 
 | postgres.resources | object | `{"limits":{"cpu":"1000m","memory":"512Mi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"20Mi"}}` | Pod assigned resources |
 | postgres.securityContext | object | `{"runAsGroup":0,"runAsNonRoot":false,"runAsUser":0,"seLinuxOptions":{},"seccompProfile":{"type":"RuntimeDefault"}}` | Pod security context |
 | postgres.service.port | string | `"5432"` | Service port number |
-| postgres.user | string | `nil` | Postgres connection username (Required) |
+| postgres.user | string | `"postgres"` | Postgres connection username (Required) |
