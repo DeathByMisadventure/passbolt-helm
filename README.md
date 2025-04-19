@@ -136,41 +136,41 @@ the administrator account, then configure the Passbolt application, and finally 
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| firstAdmin | object | `{"email":"admin@domain.com","firstName":"First","surname":"Admin"}` | Information on setting up the initial admin account |
-| imagePullSecrets | list | `[]` | Used for private repositories |
-| ingress-nginx.controller.config | object | `{"enable-modsecurity":"true","enable-owasp-modsecurity-crs":"true","modsecurity-snippet":"SecRuleEngine On\nSecStatusEngine Off\nSecAuditLog /dev/stdout\nSecAuditLogFormat JSON\nSecAuditLogParts ABCFHKZ\nSecAuditEngine RelevantOnly\nSecPcreMatchLimit 500000\nSecPcreMatchLimitRecursion 500000\nSecAction \"id:900200,phase:1,nolog,pass,t:none,setvar:tx.allowed_methods=GET HEAD POST OPTIONS PUT PATCH DELETE\"\nSecRuleRemoveById 920440\n","modsecurity-transaction-id":"$request_id"}` | Ingress-NGINX Configuration for MODSECURITY OWASP Protection Comment out this entire section to disable the WAF |
-| ingress-nginx.enabled | bool | `false` | Enable the ingress-nginx module dependency if not enabled in the cluster |
-| ingress.annotations | object | `{"nginx.ingress.kubernetes.io/force-ssl-redirect":"true"}` | Ingress annotations |
-| ingress.className | string | `"nginx"` | Ingress class type |
-| ingress.enabled | bool | `true` | Enable Ingress |
-| ingress.hostname | string | `"passbolt.localdev.me"` | ingress external hostname |
-| ingress.tls | object | `{"secretName":null}` | Enable TLS with a specific preconfigured TLS certificate secret |
-| passbolt | object | `{"config":null,"image":{"pullPolicy":"IfNotPresent","repository":"passbolt/passbolt","tag":"latest"},"name":"passbolt","pvc":{"storageRequest":"100Mi"},"replicas":1,"resources":{"limits":{"cpu":"1000m","memory":"512Mi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"80Mi"}},"securityContext":{"allowPrivilegeEscalation":true,"readOnlyRootFilesystem":false},"service":{"name":"http","port":80,"type":"ClusterIP"}}` | Image pull secrets |
-| passbolt.config | string | `nil` | Configuration data passed directly into passbolt pod environment variables as is Additional configuration settings are available at * https://github.com/passbolt/passbolt_api/blob/master/config/default.php * https://github.com/passbolt/passbolt_api/blob/master/config/app.default.php Note: It is recommended to set email options through the GUI once deployed |
-| passbolt.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| passbolt.image.repository | string | `"passbolt/passbolt"` | Image repository |
-| passbolt.image.tag | string | `"latest"` | Image tag defaults to Chart AppVersion |
-| passbolt.name | string | `"passbolt"` | Container Name |
-| passbolt.pvc.storageRequest | string | `"100Mi"` | PVC size for the pod data |
-| passbolt.replicas | int | `1` | Number of pod replicas |
-| passbolt.resources | object | `{"limits":{"cpu":"1000m","memory":"512Mi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"80Mi"}}` | Pod assigned resources |
-| passbolt.securityContext | object | `{"allowPrivilegeEscalation":true,"readOnlyRootFilesystem":false}` | Pod security context |
-| passbolt.service | object | `{"name":"http","port":80,"type":"ClusterIP"}` | Passbolt container service port information |
-| postgres.database | string | `"passbolt"` | Database name |
-| postgres.enabled | bool | `true` | Enable internal postgres database |
-| postgres.hostname | string | `"postgres.localdev.me"` | If internal postgres is disabled, the external database hostname |
-| postgres.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| postgres.image.repository | string | `"postgres"` | Image repository |
-| postgres.image.tag | string | `"17-alpine"` | Image tag |
-| postgres.name | string | `"postgres"` | Container Name |
-| postgres.password | string | `nil` | Postgres connection password (Required) |
-| postgres.pvc.selector | string | `nil` | Selector to match pre-provisioned PV |
-| postgres.pvc.storageClassName | string | `nil` | Storage Class Name for a pre-provisioned PV |
-| postgres.pvc.storageRequest | string | `"100Mi"` | Postgres PVC storage request size |
-| postgres.replicas | int | `1` | Number of pod replicas |
-| postgres.resources | object | `{"limits":{"cpu":"1000m","memory":"512Mi"},"requests":{"cpu":"100m","ephemeral-storage":"2Gi","memory":"20Mi"}}` | Pod assigned resources |
-| postgres.securityContext | object | `{"runAsGroup":0,"runAsNonRoot":false,"runAsUser":0,"seLinuxOptions":{},"seccompProfile":{"type":"RuntimeDefault"}}` | Pod security context |
-| postgres.service.port | string | `"5432"` | Service port number |
-| postgres.user | string | `"postgres"` | Postgres connection username (Required) |
+| Key | Type | Description |
+|-----|------|-------------|
+| firstAdmin | object | Information on setting up the initial admin account |
+| imagePullSecrets | list | Used for private repositories |
+| ingress-nginx.controller.config | object | Ingress-NGINX Configuration for MODSECURITY OWASP Protection Comment out this entire section to disable the WAF |
+| ingress-nginx.enabled | bool | Enable the ingress-nginx module dependency if not enabled in the cluster |
+| ingress.annotations | object | Ingress annotations |
+| ingress.className | string | Ingress class type |
+| ingress.enabled | bool | Enable Ingress |
+| ingress.hostname | string | ingress external hostname |
+| ingress.tls | object | Enable TLS with a specific preconfigured TLS certificate secret |
+| passbolt | object | Image pull secrets |
+| passbolt.config | string | Configuration data passed directly into passbolt pod environment variables as is Additional configuration settings are available at * https://github.com/passbolt/passbolt_api/blob/master/config/default.php * https://github.com/passbolt/passbolt_api/blob/master/config/app.default.php Note: It is recommended to set email options through the GUI once deployed |
+| passbolt.image.pullPolicy | string | Image pull policy |
+| passbolt.image.repository | string | Image repository |
+| passbolt.image.tag | string | Image tag defaults to Chart AppVersion |
+| passbolt.name | string | Container Name |
+| passbolt.pvc.storageRequest | string | PVC size for the pod data |
+| passbolt.replicas | int | Number of pod replicas |
+| passbolt.resources | object | Pod assigned resources |
+| passbolt.securityContext | object | Pod security context |
+| passbolt.service | object | Passbolt container service port information |
+| postgres.database | string | Database name |
+| postgres.enabled | bool | Enable internal postgres database |
+| postgres.hostname | string | If internal postgres is disabled, the external database hostname |
+| postgres.image.pullPolicy | string | Image pull policy |
+| postgres.image.repository | string | Image repository |
+| postgres.image.tag | string | Image tag |
+| postgres.name | string | Container Name |
+| postgres.password | string | Postgres connection password (Required) |
+| postgres.pvc.selector | string | Selector to match pre-provisioned PV |
+| postgres.pvc.storageClassName | string | Storage Class Name for a pre-provisioned PV |
+| postgres.pvc.storageRequest | string | Postgres PVC storage request size |
+| postgres.replicas | int | Number of pod replicas |
+| postgres.resources | object | Pod assigned resources |
+| postgres.securityContext | object | Pod security context |
+| postgres.service.port | string | Service port number |
+| postgres.user | string | Postgres connection username (Required) |
