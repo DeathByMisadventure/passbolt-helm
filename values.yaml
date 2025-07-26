@@ -42,7 +42,7 @@ postgres:
   # -- Postgres connection username (Required)
   user: postgres
   # -- Postgres connection password (Required)
-  password:
+  password: changeMe
   pvc:
     # -- Postgres PVC storage request size
     storageRequest: 100Mi
